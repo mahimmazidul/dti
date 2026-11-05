@@ -66,17 +66,24 @@ Data sources: ChEMBL, PubChem (free, open access)
 python cli.py BRCA1 --mode target --save results.csv
 ```
 
+### Network Graph Example
+The network graph visualizes drugs and proteins as connected points, showing interaction strength through line thickness. This helps identify polypharmacology patterns and potential drug repurposing opportunities at a glance.
+```bash
+python cli.py EGFR --mode target --graph --save-graph egfr_network.png
+```
+
 ## Data Sources
 
 This tool uses only free and open public APIs:
 - **ChEMBL**: A database of bioactive molecules with drug-like properties, maintained by EMBL-EBI.
 - **PubChem**: A database of chemical molecules and their activities against biological assays, maintained by NCBI.
 
-## What's coming
+## Roadmap
 
 - OpenFDA safety data (done, use --safety flag with drug mode)
-- Network graph visualization of interactions
-- Drug repurposing scanner
+- Network graph visualization (done, use --graph flag with target mode)
+- Drug repurposing scanner (done, use --repurpose flag with target mode)
+- Web interface using Flask or Streamlit
 
 ---
 Created by Mazidul Islam Mahim

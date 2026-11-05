@@ -11,6 +11,8 @@ def main():
     parser.add_argument("--limit", type=int, default=10, help="how many results to return (default: 10)")
     parser.add_argument("--save", help="optional filename to save results as CSV")
     parser.add_argument("--safety", action="store_true", help="Include FDA safety and interaction data")
+    parser.add_argument("--graph", action="store_true", help="Generate drug-target network graph")
+    parser.add_argument("--save-graph", type=str, default=None, help="Filename to save graph PNG")
     
     args = parser.parse_args()
     
@@ -65,5 +67,40 @@ def main():
             for i, event in enumerate(events, 1):
                 print(f"  {i}. {event['reaction_name']} - Count: {event['count']}, Serious: {event['serious']}")
 
-if __name__ == "__main__":
-    main()
+    # Network Graph section
+    if args.graph:
+        if args.mode == "drug":
+            print("Network graph is only available in target mode")
+        else:
+            from src.visualizer import build_interaction_network, summarize_network
+            
+            # Get bioactivities from results
+            bioactivities = []
+            if results.get("results"):
+                # Extract bioactivities from the results dict structure
+                # In target mode, results["results"] is a list of dicts with molecule info
+                # We need to reconstruct or use the original bioactivities from analyzer logic
+                # Since analyzer.py doesn't return the raw bioactivities list directly, 
+                # we'll reconstruct it or modify analyzer.py if needed.
+                # Actually, let's look at analyzer.py - it returns results list with ic50_nm, pchembl, etc.
+                # We can map them back to the format expected by visualizer.
+                for item in results["results"]:
+                    bioactivities.append({
+                        "molecule_chembl_id": item.get("drug_name"), # Note: item["drug_name"] might be IUPAC name or ID
+                        "standard_value": item.get("ic50_nm"),
+                        "pchembl_value": item.get("pchembl"),
+                        "canonical_smiles": item.get("smiles")
+                    })
+            
+            # Print summary
+            summary = summarize_network(args.query, bioactivities)
+            import pandas as pd
+            print("\n" + "-" * 50)
+            print("Network Summary")
+            print(pd.Series(summary).to_string())
+            
+            # Build network
+            build_interaction_network(args.query, bioactivities, output_file=args.save_graph)
+
+    if __name__ == "__main__":
+        main()
