@@ -85,5 +85,11 @@ This tool uses only free and open public APIs:
 - Drug repurposing scanner (done, use --repurpose flag with target mode)
 - Web interface using Flask or Streamlit
 
+## Drug Repurposing Scanner
+This feature scans for approved or clinical-stage drugs that interact with a target protein, helping identify new uses for existing medications. It is useful because repurposing existing drugs can save years of development time and billions in costs compared to creating new drugs from scratch.
+```bash
+python cli.py EGFR --mode target --repurpose --min-phase 2
+```
+
 ---
 Created by Mazidul Islam Mahim

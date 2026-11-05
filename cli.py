@@ -13,6 +13,8 @@ def main():
     parser.add_argument("--safety", action="store_true", help="Include FDA safety and interaction data")
     parser.add_argument("--graph", action="store_true", help="Generate drug-target network graph")
     parser.add_argument("--save-graph", type=str, default=None, help="Filename to save graph PNG")
+    parser.add_argument("--repurpose", action="store_true", help="Scan for repurposing candidates hitting this target")
+    parser.add_argument("--min-phase", type=int, default=2, help="Minimum clinical phase for repurposing candidates (0-4)")
     
     args = parser.parse_args()
     
@@ -101,6 +103,17 @@ def main():
             
             # Build network
             build_interaction_network(args.query, bioactivities, output_file=args.save_graph)
+
+    # Repurposing Scanner section
+    if args.repurpose:
+        if args.mode == "drug":
+            print("Repurposing scan is only available in target mode")
+        else:
+            from src.repurposing import find_repurposing_candidates, format_repurposing_results
+            print("Scanning for repurposing candidates... this may take a moment")
+            candidates = find_repurposing_candidates(args.query, min_phase=args.min_phase)
+            print(format_repurposing_results(candidates))
+            print("\nNote: computational repurposing candidates require experimental validation before any clinical conclusion can be drawn.")
 
     if __name__ == "__main__":
         main()
