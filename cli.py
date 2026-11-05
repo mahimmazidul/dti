@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 from src.analyzer import analyze, format_results
 import sys
+import time
 
 def main():
     parser = argparse.ArgumentParser(description="DTI Analyzer - mahimmazidul")
@@ -9,6 +10,7 @@ def main():
     parser.add_argument("--mode", choices=["target", "drug"], default="target", help="search mode (default: target)")
     parser.add_argument("--limit", type=int, default=10, help="how many results to return (default: 10)")
     parser.add_argument("--save", help="optional filename to save results as CSV")
+    parser.add_argument("--safety", action="store_true", help="Include FDA safety and interaction data")
     
     args = parser.parse_args()
     
@@ -41,6 +43,27 @@ def main():
                 print(f"\nResults saved to {args.save}")
         except Exception as e:
             print(f"\nError saving to CSV: {e}")
+            
+    # FDA Safety Data section
+    if args.safety and args.mode == "drug":
+        time.sleep(1)
+        print("\n" + "-" * 50)
+        print("FDA Safety Data")
+        
+        fda_data = results.get("fda", {})
+        interactions = fda_data.get("interactions_text", "No label data found")
+        warnings = fda_data.get("warnings", "No warnings data found")
+        events = fda_data.get("adverse_events", [])
+        
+        print(f"Drug Interactions: {interactions}")
+        print(f"Warnings: {warnings}")
+        
+        if interactions == "No label data found":
+            print(f"No FDA label data found for {args.query}")
+        else:
+            print("Top Adverse Events:")
+            for i, event in enumerate(events, 1):
+                print(f"  {i}. {event['reaction_name']} - Count: {event['count']}, Serious: {event['serious']}")
 
 if __name__ == "__main__":
     main()

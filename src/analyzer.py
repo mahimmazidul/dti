@@ -1,5 +1,6 @@
 from src.chembl_query import search_target, get_bioactivities, search_molecule
 from src.pubchem_query import get_compound_properties, get_compound_image_url
+from src.openfda_query import get_drug_label_summary
 from tabulate import tabulate
 import time
 
@@ -68,12 +69,16 @@ def analyze(query, mode="target"):
         # Respect rate limits if we were doing loops (not needed here but good practice)
         time.sleep(1)
         
-        # 3. Combine and return
+        # 3. Call get_drug_label_summary for FDA safety data
+        fda_summary = get_drug_label_summary(query)
+        
+        # 4. Combine and return
         return {
             "mode": "drug",
             "query": query,
             "chembl_info": chembl_info,
             "pubchem_info": pubchem_info,
+            "fda": fda_summary,
             "results": [chembl_info, pubchem_info] if chembl_info or pubchem_info else []
         }
     

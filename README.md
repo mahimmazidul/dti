@@ -74,7 +74,7 @@ This tool uses only free and open public APIs:
 
 ## What's coming
 
-- OpenFDA safety data integration
+- OpenFDA safety data (done, use --safety flag with drug mode)
 - Network graph visualization of interactions
 - Drug repurposing scanner
 
