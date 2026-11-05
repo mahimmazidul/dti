@@ -6,6 +6,12 @@ Drug-target interaction describes how a drug molecule binds to and affects a spe
 
 The DTI Analyzer is a command-line tool built with Python that lets you explore drug-target interactions using free public APIs. You can search for targets (like proteins) and find drugs that interact with them, or search for drugs and see their properties and targets.
 
+The tool now has four capabilities:
+- Search drug and target interactions by compound or protein name
+- Retrieve FDA drug safety and adverse event data
+- Visualize interaction networks as weighted graphs
+- Scan for drug repurposing candidates by clinical phase
+
 ## Installation
 
 1. Clone the repository:
