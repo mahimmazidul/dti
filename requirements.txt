@@ -1,0 +1,8 @@
+chembl_webresource_client
+pubchempy
+pandas
+requests
+tabulate
+jupyter
+matplotlib
+networkx
