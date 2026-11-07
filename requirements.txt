@@ -1,8 +1,32 @@
+rdkit-pypi
+scikit-learn
+xgboost
+lightgbm
+torch
+torch-geometric
+numpy
+pandas
+matplotlib
+seaborn
+joblib
+tqdm
+optuna
+shap
+umap-learn
+scipy
+statsmodels
+deepchem
+mordred
+molvs
 chembl_webresource_client
 pubchempy
-pandas
 requests
 tabulate
 jupyter
-matplotlib
+ipywidgets
+plotly
 networkx
+
+# NOTE: rdkit-pypi installation failed in sandbox environment.
+# In production environment, install via: pip install rdkit-pypi
+# Alternative: use conda install -c conda-forge rdkit if pip fails
